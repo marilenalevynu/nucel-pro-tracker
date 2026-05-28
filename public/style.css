@@ -305,3 +305,41 @@ tr:hover td      { background: var(--s2); }
   .EG  { grid-template-columns: 1fr; }
   .FR2 { grid-template-columns: 1fr; }
 }
+
+/* ── Dark mode explicit text overrides ── */
+[data-theme=dark] .PH h1,
+[data-theme=dark] .PH p,
+[data-theme=dark] .ST,
+[data-theme=dark] .TT,
+[data-theme=dark] .LN,
+[data-theme=dark] .UN,
+[data-theme=dark] .NLB,
+[data-theme=dark] h1, [data-theme=dark] h2, [data-theme=dark] h3,
+[data-theme=dark] .PT,
+[data-theme=dark] .info-title,
+[data-theme=dark] .FL2,
+[data-theme=dark] .DBT { color: var(--ink); }
+
+[data-theme=dark] .PH p,
+[data-theme=dark] .LS,
+[data-theme=dark] .UR,
+[data-theme=dark] .MMT,
+[data-theme=dark] .PM,
+[data-theme=dark] .KS,
+[data-theme=dark] .KL,
+[data-theme=dark] .info-sub { color: var(--i6); }
+
+[data-theme=dark] .KC,
+[data-theme=dark] .EC,
+[data-theme=dark] .TC,
+[data-theme=dark] .ACC,
+[data-theme=dark] .MDL,
+[data-theme=dark] .SB,
+[data-theme=dark] .TB,
+[data-theme=dark] .MN { background: var(--w); }
+
+[data-theme=dark] .CON { background: var(--s2); }
+
+[data-theme=dark] td { color: var(--i6); }
+[data-theme=dark] th { color: var(--i6); }
+[data-theme=dark] thead { background: var(--s3); }
