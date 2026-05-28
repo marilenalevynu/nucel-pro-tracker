@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NuCel Pro Tracker</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%238A05BE'/><path d='M18 80 L18 22 C18 11 26 5 36 5 C46 5 54 13 60 26 L76 60 C80 68 87 74 96 74' stroke='white' stroke-width='14' stroke-linecap='round' fill='none'/></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="R" id="R" data-theme="light">
+
+  <!-- SIDEBAR -->
+  <div class="SB">
+    <div class="SBL">
+      <div class="LR">
+        <div class="NM">
+          <svg width="26" height="19" viewBox="0 0 100 72" fill="none">
+            <path d="M9 63 L9 17 C9 9 15 4 23 4 C31 4 37 10 42 21 L55 49 C59 57 65 62 73 62 C81 62 85 56 85 48 L85 9"
+              stroke="white" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <div class="LN">NuCel <span style="display:inline-flex;align-items:center;background:linear-gradient(135deg,#8A05BE,#C056FF);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:.06em;vertical-align:middle;margin-left:2px">PRO</span></div>
+          <div class="LS">Pro Tracker</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="NAV">
+      <div style="height:7px"></div>
+      <div class="NLB">Visões</div>
+      <div class="NI on" onclick="pg('exec',this)"><i class="ti ti-layout-dashboard"></i> Executiva</div>
+      <div class="NI" onclick="pg('proj',this)"><i class="ti ti-folder"></i> Projetos <span class="NB" id="cnt">0</span></div>
+
+      <!-- Por Líder expansível -->
+      <div class="NI" id="ni-lider-toggle" onclick="toggleLiderMenu(this)">
+        <i class="ti ti-users"></i>
+        <span>Por Líder</span>
+        <i class="ti ti-chevron-down CHV" style="margin-left:auto;font-size:13px;transition:transform .2s;color:var(--i3)"></i>
+      </div>
+      <div class="SUBNAV" id="subnav-lider">
+        <!-- populado via JS com líderes reais -->
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="NLB">Gerenciar</div>
+      <div class="NI" onclick="pg('novo',this)"><i class="ti ti-circle-plus"></i> Novo Projeto</div>
+      <div class="NI" onclick="pg('cal',this)"><i class="ti ti-calendar"></i> Agendar Reunião</div>
+      <div class="NI" onclick="pg('dados',this)"><i class="ti ti-database"></i> Dados & Histórico</div>
+    </div>
+
+    <div class="SBB">
+      <div class="UC">
+        <div class="AV" id="userAv">MC</div>
+        <div>
+          <div class="UN" id="userName">Marília Cury</div>
+          <div class="UR" id="userRole">M3 · Gerente NuCel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="MN">
+    <div class="TB">
+      <div style="display:flex;align-items:center;gap:7px"><div class="TT" id="ptitle">Visão Executiva</div><span style="display:inline-flex;align-items:center;background:linear-gradient(135deg,#8A05BE,#C056FF);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:.06em">PRO</span></div>
+      <div class="TA">
+        <button class="BG" onclick="pg('novo',null)"><i class="ti ti-plus"></i> Novo projeto</button>
+        <div class="TGL" onclick="thm()" title="Alternar tema"><div class="TH" id="tth">☀️</div></div>
+      </div>
+    </div>
+
+    <div class="CON">
+
+      <!-- EXECUTIVA -->
+      <div class="PG on" id="pg-exec">
+        <div class="PH"><h1>Visão Executiva</h1><p id="exec-sub">NuCel Pro Tracker · métricas por líder</p></div>
+        <div class="KG">
+          <div class="KC"><div class="KL"><i class="ti ti-folder"></i> Total</div><div class="KV" id="kt">—</div><div class="KS cg" id="ks-total">—</div></div>
+          <div class="KC"><div class="KL"><i class="ti ti-check"></i> Taxa de sucesso</div><div class="KV" id="ks-pct">—</div><div class="KS ca" id="ks-sub">—</div></div>
+          <div class="KC"><div class="KL"><i class="ti ti-loader"></i> Em andamento</div><div class="KV" id="ks-wip">—</div><div class="KS" style="color:var(--i6)" id="ks-wip-sub">—</div></div>
+          <div class="KC"><div class="KL"><i class="ti ti-users"></i> Líderes</div><div class="KV" id="ks-lid">—</div><div class="KS" style="color:var(--i6)">M1/M2 ativos</div></div>
+        </div>
+        <div class="SH">
+          <span class="ST">Por líder</span>
+          <div style="display:flex;gap:5px">
+            <button class="FB on" onclick="fe('todos',this)">Todos</button>
+            <button class="FB" onclick="fe('Iniciado',this)">Iniciado</button>
+            <button class="FB" onclick="fe('Finalizado',this)">Finalizado</button>
+            <button class="FB" onclick="fe('Prorrogado',this)">Prorrogado</button>
+          </div>
+        </div>
+        <div class="EG" id="eg"></div>
+      </div>
+
+      <!-- PROJETOS -->
+      <div class="PG" id="pg-proj">
+        <div class="PH"><h1>Todos os projetos</h1><p>Lista completa com métricas e resultados</p></div>
+        <div class="FL" id="sf">
+          <button class="FB on" onclick="fp('todos',this)">Todos</button>
+          <button class="FB" onclick="fp('Iniciado',this)">Iniciado</button>
+          <button class="FB" onclick="fp('Prorrogado',this)">Prorrogado</button>
+          <button class="FB" onclick="fp('Finalizado',this)">Finalizado</button>
+          <button class="FB" onclick="fp('Cancelado',this)">Cancelado</button>
+        </div>
+        <div class="TC">
+          <table>
+            <thead>
+              <tr>
+                <th>Projeto / Queue</th><th>Líder</th><th>Status</th>
+                <th>Métrica</th><th>Target</th><th>Real</th><th>Resultado</th><th>Semana</th>
+              </tr>
+            </thead>
+            <tbody id="ptb"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- POR LÍDER -->
+      <div class="PG" id="pg-lider">
+        <div class="PH"><h1 id="lider-title">Visão por líder</h1><p id="lider-sub">Clique no nome para expandir</p></div>
+        <div id="lc"></div>
+      </div>
+
+      <!-- NOVO PROJETO -->
+      <div class="PG" id="pg-novo">
+        <div class="PH"><h1>Novo projeto</h1><p>NuCel Pro Tracker · salvo no Drive · Slack notificado</p></div>
+        <div class="NTC"><i class="ti ti-info-circle"></i> Dados salvos em <strong>NuCel Pro Tracker — BD Projetos</strong></div>
+        <form id="formNovo" onsubmit="sv(event)" style="max-width:560px">
+          <div class="FG"><label class="FL2">Título do projeto *</label><input class="FI" id="nT" placeholder="Ex: Automação triagem nucel-bug" required/></div>
+          <div class="FR2">
+            <div class="FG"><label class="FL2">Líder *</label>
+              <select class="FI" id="nL" required>
+                <option value="">Selecionar...</option>
+                <option>Bruna Freitas</option><option>Evandro Silva</option>
+                <option>Bruno Ziurkelis</option><option>Nathalia Alcantara</option>
+                <option>Rogério Lobato</option><option>Marilena Levy</option>
+                <option>Ana Claudia Oliveira</option><option>Daniel Pereira</option>
+                <option>Bianca Holanda</option><option>Amanda Garcia</option>
+                <option>Giancarlo Mendonça</option><option>Mariana Foffa</option>
+              </select>
+            </div>
+            <div class="FG"><label class="FL2">Status</label>
+              <select class="FI" id="nSt">
+                <option>Iniciado</option><option>Prorrogado</option>
+                <option>Finalizado</option><option>Cancelado</option>
+              </select>
+            </div>
+          </div>
+          <div class="FR2">
+            <div class="FG"><label class="FL2">Semana de entrega</label><input class="FI" id="nW" type="week"/></div>
+            <div class="FG"><label class="FL2">Cluster</label>
+              <select class="FI" id="nC">
+                <option value="">Selecionar...</option>
+                <option>N2 — Todos</option><option>N2 — Rede e Conectividade</option>
+                <option>N2 — Gerenciamento de Chip</option><option>N2 — Gerenciamento de Plano</option>
+                <option>N2 — Portabilidade</option><option>N2 — RPI</option>
+                <option>Q&amp;T</option><option>BPO</option><option>Melhoria Contínua</option>
+              </select>
+            </div>
+          </div>
+          <div class="FG"><label class="FL2">Link do documento no Drive (opcional)</label><input class="FI" id="nD" type="url" placeholder="https://docs.google.com/..."/></div>
+          <div class="DBS">
+            <div class="DBT"><i class="ti ti-database"></i> Queues Databricks vinculadas</div>
+            <div style="font-size:10px;color:var(--i6);margin-bottom:7px">Selecione as queues que este projeto monitora</div>
+            <div class="CHS" id="qc">
+              <span class="CH" onclick="tc(this)">nucel-bug</span>
+              <span class="CH" onclick="tc(this)">nucel-calls-issues</span>
+              <span class="CH" onclick="tc(this)">nucel-no-signal</span>
+              <span class="CH" onclick="tc(this)">nucel-internet-issues</span>
+              <span class="CH" onclick="tc(this)">nucel-sms-issues</span>
+              <span class="CH" onclick="tc(this)">nucel-esim</span>
+              <span class="CH" onclick="tc(this)">nucel-psim</span>
+              <span class="CH" onclick="tc(this)">nucel-portability</span>
+              <span class="CH" onclick="tc(this)">nucel-status</span>
+              <span class="CH" onclick="tc(this)">nucel-reembolso</span>
+              <span class="CH" onclick="tc(this)">nucel-turbo-box</span>
+              <span class="CH" onclick="tc(this)">nucel-transferencia</span>
+              <span class="CH" onclick="tc(this)">nucel-bonus-issues</span>
+              <span class="CH" onclick="tc(this)">nucel-recovery</span>
+              <span class="CH" onclick="tc(this)">nucel-pin-puk</span>
+            </div>
+            <div class="FR2" style="margin-top:11px">
+              <div class="FG"><label class="FL2">Métrica de sucesso</label>
+                <select class="FI" id="nM">
+                  <option value="">Selecionar...</option>
+                  <option>Taxa de resolução (%)</option>
+                  <option>Tempo médio de tratativa (min)</option>
+                  <option>Redução de backlog (%)</option>
+                  <option>CSAT / NPS</option>
+                  <option>Taxa de retrabalho (%)</option>
+                  <option>Volume de tickets processados</option>
+                  <option>Customizada</option>
+                </select>
+              </div>
+              <div class="FG"><label class="FL2">Target</label><input class="FI" id="nTg" placeholder="Ex: 85% ou 8 min"/></div>
+            </div>
+            <div class="FG"><label class="FL2">Job Databricks para validação automática</label><input class="FI" id="nJ" placeholder="Ex: nucel_resolution_rate_weekly"/></div>
+          </div>
+          <div class="FG"><label class="FL2">Tarefas</label><textarea class="FI" id="nTk" rows="3" placeholder="- Mapear fluxo atual&#10;- Validar hipótese no Databricks&#10;- Implementar e acompanhar"></textarea></div>
+          <div style="display:flex;gap:8px">
+            <button type="submit" class="BP"><i class="ti ti-check"></i> Salvar projeto</button>
+            <button type="button" class="BG" onclick="pg('exec',null)">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- AGENDAR REUNIÃO -->
+      <div class="PG" id="pg-cal">
+        <div class="PH"><h1>Agendar reunião</h1><p>Cruza agendas e sugere 3 horários livres via Google Agenda</p></div>
+        <div style="max-width:420px">
+          <div class="FG"><label class="FL2">Projeto</label>
+            <select class="FI" id="calP" onchange="showSlots()">
+              <option value="">Selecionar projeto...</option>
+            </select>
+          </div>
+          <div id="calSlots" style="display:none">
+            <div style="font-size:11px;color:var(--i6);margin-bottom:10px" id="calMembers"></div>
+            <div style="font-size:10px;font-weight:600;color:var(--i3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">3 horários disponíveis</div>
+            <div class="CAL-CARD"><div><div class="cdt">Terça, 3 jun · 10:00 – 11:00</div><div class="cfree">✓ Todos disponíveis</div></div><i class="ti ti-chevron-right" style="color:var(--i3)"></i></div>
+            <div class="CAL-CARD"><div><div class="cdt">Quarta, 4 jun · 14:30 – 15:30</div><div class="cfree">✓ Todos disponíveis</div></div><i class="ti ti-chevron-right" style="color:var(--i3)"></i></div>
+            <div class="CAL-CARD"><div><div class="cdt">Sexta, 6 jun · 09:00 – 10:00</div><div class="cfree">✓ Todos disponíveis</div></div><i class="ti ti-chevron-right" style="color:var(--i3)"></i></div>
+            <button class="BP" style="margin-top:4px"><i class="ti ti-calendar-plus"></i> Criar convite</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DADOS & HISTÓRICO -->
+      <div class="PG" id="pg-dados">
+        <div class="PH"><h1>Dados & Histórico</h1><p>3 planilhas no Google Drive · atualizadas em tempo real</p></div>
+        <div class="TC">
+          <div class="info-row">
+            <div class="info-icon" style="background:#E8F1FF"><i class="ti ti-table" style="color:#1558B0"></i></div>
+            <div>
+              <div class="info-title">BD Projetos & Audit Log</div>
+              <div class="info-sub"><a href="https://docs.google.com/spreadsheets/d/1MEYI1-B_mEzWEyHiDmbaTdG_nfyPgO1uxuXWwc4baf4" target="_blank" style="color:var(--nu)">Abrir no Drive ↗</a></div>
+              <div class="code-blk">ID | Título | Líder | Status | Queue | Target | Real | Result_Flag | Link_Drive</div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon" style="background:#E0F7F0"><i class="ti ti-history" style="color:#006647"></i></div>
+            <div>
+              <div class="info-title">Audit Log</div>
+              <div class="info-sub"><a href="https://docs.google.com/spreadsheets/d/19BCJyrIp_0pQjIVy4CA2U4PIn5xROdj9tkHq1E-K3Zo" target="_blank" style="color:var(--nu)">Abrir no Drive ↗</a></div>
+              <div class="code-blk">Timestamp | Usuário | Campo_Alterado | Valor_Antigo → Valor_Novo | Ação</div>
+            </div>
+          </div>
+          <div class="info-row" style="border:none">
+            <div class="info-icon" style="background:#FFF3E0"><i class="ti ti-database" style="color:#8A4500"></i></div>
+            <div>
+              <div class="info-title">Queues de Referência (Databricks)</div>
+              <div class="info-sub"><a href="https://docs.google.com/spreadsheets/d/1-RUn9m70PIUQ3Bk2EVliXPAPPCNc-CVntPVDqIFIxQ0" target="_blank" style="color:var(--nu)">Abrir no Drive ↗</a></div>
+              <div class="code-blk">Queue_ID | Workflow | Cluster | Parceiro | SLA_N3 | Métrica_Sugerida</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /CON -->
+  </div><!-- /MN -->
+</div><!-- /R -->
+
+<!-- MODAL SALVO -->
+<div class="MO" id="mo">
+  <div class="MDL">
+    <div class="MH">
+      <h2><i class="ti ti-circle-check" style="color:var(--gr)"></i> Projeto salvo!</h2>
+      <button class="MX" onclick="closeMo()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="MB">
+      <div id="mdet" style="font-size:12px;color:var(--i6);line-height:1.9"></div>
+      <div class="NTC" style="margin-top:12px;margin-bottom:0">
+        <i class="ti ti-check"></i>
+        <div>Slack notificado · Planilha atualizada · Audit Log registrado · Job Databricks vinculado</div>
+      </div>
+    </div>
+    <div class="MF">
+      <button class="BG" onclick="closeMo()">Fechar</button>
+      <button class="BP" onclick="closeMo()">Ver projetos</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
